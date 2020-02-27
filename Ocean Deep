@@ -1,0 +1,66 @@
+Public Class Oceano
+
+    Private Sub Oceano_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        txtBinario.Enabled = False
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BCargarArchivo.Click
+        Dim texto As String
+        texto = My.Computer.FileSystem.ReadAllText("C:\Users\Fml Montoya Nieto\Desktop\binario.txt")
+        TextBox1.Text = texto
+
+    End Sub
+
+    Private Sub BVerificar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BVerificar.Click
+
+        Dim res As Double
+        Dim arrayCadena() As String = (TextBox1.Text).Split("#") 'dividi la cadena y lo almacena en un array cuando encuentra el simbolo #
+
+        For i = 0 To arrayCadena.Length - 1
+            txtBinario.Text = ConvertirNumero(arrayCadena(i))
+            res = CInt(ConvertirNumero(arrayCadena(i)))
+
+            If NumeroPrimo(res) = True Then
+                MsgBox("Si")
+            Else
+                MsgBox("No")
+            End If
+        Next
+
+    End Sub
+
+    'FUNCIONES
+
+    Public Function ConvertirNumero(ByVal cadena As String) As Double 'la funcion convierte el numero binario a decimal
+
+        Dim binario, largo As String
+        Dim x, suma, i As Integer
+
+        binario = Trim(cadena)
+        binario = StrReverse(binario)
+        largo = Len(binario)
+
+        For i = 1 To largo
+            x = 2 ^ (i - 1)
+            suma = suma + (Int(Mid$(binario, i, 1)) * x)
+        Next
+        Return suma
+
+    End Function
+
+    Public Function NumeroPrimo(ByVal numero As Integer) As Boolean 'la funcion valida si el numero es primo
+        Dim a As Integer = 0
+        Dim n As Integer
+        n = numero
+        For i = 1 To n + 1
+            If (n Mod i = 0) Then
+                a = a + 1
+            End If
+        Next i
+        If (a <> 2) Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+End Class
